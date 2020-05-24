@@ -1,10 +1,12 @@
 import Vue from 'vue'
-import ElmentUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
+
 import App from './App.vue'
 import router from './router'
+import Vant from 'vant';
+import 'vant/lib/index.css';
+Vue.use(Vant);
 
-Vue.use(ElmentUI)
+
 Vue.config.productionTip = process.env.NODE_ENV === 'production'
 console.log(process.env.VUE_APP_SERVICE_URL)
 

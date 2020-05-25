@@ -11,15 +11,50 @@
 "
     />
 
-    <van-row>
+    <!-- <van-row style="padding-left: 13px;">
       <van-checkbox-group v-model="result" ref="checkboxGroup">
-        <van-checkbox name="a">复选框 a</van-checkbox>
+        <van-checkbox   style="height: 24vw;"  icon-size="4vw" name="a">
+          <van-swipe-cell  >
+            <van-card
+            style="width: 533px;"
+              num="2"
+              price="2.00"
+              desc="描述信息"
+              title="商品标题"
+              class="goods-card"
+              thumb="https://img.yzcdn.cn/vant/cat.jpeg"
+            />
+            <template #right>
+              <van-button
+                style="height: 100%;"
+                square
+                text="删除"
+                type="danger"
+                class="delete-button"
+              />
+            </template>
+          </van-swipe-cell>
+        </van-checkbox>
         <van-checkbox name="b">复选框 b</van-checkbox>
         <van-checkbox name="c">复选框 c</van-checkbox>
       </van-checkbox-group>
       <van-button type="primary" @click="checkAll">全选</van-button>
       <van-button type="info" @click="toggleAll">反选</van-button>
-    </van-row>
+    </van-row>-->
+
+    <van-checkbox-group v-model="result" ref="checkboxGroup">
+      <van-checkbox name="a">
+        <van-checkbox-group v-model="result2">
+          <van-checkbox name="aaa">复选框 a</van-checkbox>
+          <van-checkbox name="bbb">复选框 b</van-checkbox>
+        </van-checkbox-group>
+      </van-checkbox>
+      <van-checkbox name="b">复选框 b</van-checkbox>
+      <van-checkbox name="c">复选框 c</van-checkbox>
+    </van-checkbox-group>
+
+    <van-button type="primary" @click="checkAll">全选</van-button>
+    <van-button type="info" @click="toggleAll">反选</van-button>
   </div>
 </template>
 
@@ -30,7 +65,8 @@ export default {
   data() {
     //这里存放数据
     return {
-      result: []
+      result: [],
+      result2:[]
     };
   },
   //监听属性 类似于data概念

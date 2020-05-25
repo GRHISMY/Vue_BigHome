@@ -6,6 +6,11 @@ import HomePage from '../views/homePage'
 import My  from '../views/my'
 import GoodsInfo from '../views/goodsInfo'
 import GoodsCar from '../views/goodsCar'
+import OrderDetail from '../views/orderDetail'
+import AllOrder from '../views/allOrder'
+import AddressList from '../views/addressList'
+import AddAddressList from '../views/addAddressList'
+
 
 Vue.use(VueRouter)
 
@@ -40,6 +45,26 @@ export default new VueRouter({
             path:'/goodscar',
             name:'goodscar',
             component:GoodsCar
+        },
+        {
+            path:'/orderdetail',
+            name:'orderdetail',
+            component:OrderDetail
+        },
+        {
+            path:'/allOrder',
+            name:'allOrder',
+            component:AllOrder
+        },
+        {
+            path:'/addresslist',
+            name:'addresslist',
+            component:AddressList
+        },
+        {
+            path:'/addaddresslist',
+            name:'addaddresslist',
+            component:AddAddressList
         },
     ]
 })

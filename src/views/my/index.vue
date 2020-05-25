@@ -4,14 +4,14 @@
     <van-row>
         <div class="header" style="height: 171px;">
             <van-icon color="white" class="header-icon" name="contact" />
-            <span>登录/注册</span>
+            <span @click="login">登录/注册</span>
         </div>
     </van-row>
 
     <van-row style="border-bottom: 1px solid rgba(185, 185, 185, 0.14);height: 15vw;line-height: 15vw;padding: 0 5vw;">
         <van-col span="8">我的订单</van-col>
         <van-col span="8"></van-col>
-        <van-col style="text-align: right;color: #d4d4d4;" span="8">全部订单 ></van-col>
+        <van-col @click="allOrder" style="text-align: right;color: #d4d4d4;" span="8">全部订单 ></van-col>
     </van-row>
 
     <van-grid :column-num="3" :border="false">
@@ -26,9 +26,9 @@
 
    <van-row style="height: 15vw;line-height: 15vw;padding: 0 5vw;">
 
-       <van-row>
+       <van-row @click="address"> 
             <van-col span="2"><van-icon name="star-o" /></van-col>
-            <van-col span="12">aaa</van-col>
+            <van-col span="12">地址</van-col>
             <van-col style="text-align: right;color: #d4d4d4;" span="8"> ></van-col>
         </van-row>
 
@@ -84,6 +84,15 @@ methods:{
       this.show = false;
       Toast(item.name);
     },
+    login(){
+        this.$router.push('/login');
+    },
+    allOrder(){
+        this.$router.push('/allOrder');
+    },
+    address(){
+        this.$router.push('/addresslist');
+    }
 }
 }
 </script>

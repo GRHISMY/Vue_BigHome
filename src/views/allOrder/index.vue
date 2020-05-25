@@ -1,21 +1,26 @@
 <!--  -->
 <template>
+
   <div class="shop-page" id="shopPage">
-        <div class="title-box">
-            <header class="title">购物车</header>
-            <span class="manage-btn" v-if="!isEdit" @click="isEdit = true">管理</span>
-            <span class="manage-btn" v-if="isEdit" @click="isEdit = false">完成</span>
-        </div>
+            <van-nav-bar
+      title="订单列表"
+      left-text="返回"
+      left-arrow
+      @click-left="onClickLeft"
+      style="
+    margin-top: 38px;
+"
+    />
         <ul class="outer-box">
             <li class="shop-box" :key="index" v-for="(shop,index) in json">
-                <div class="clearfix shop-title"><img :src="shop.select ? activateIconPath: baseIconPath" class="fl checkImg" @click="shopSelect(index)"/><p class="fl shopTitle">{{shop.sj}}</p><img src="../../assets/icon_arrow_right.png" class="fl arrowImg"/></div>
+                <!-- <div class="clearfix shop-title"><img :src="shop.select ? activateIconPath: baseIconPath" class="fl checkImg" @click="shopSelect(index)"/><p class="fl shopTitle">{{shop.sj}}</p><img src="../../assets/icon_arrow_right.png" class="fl arrowImg"/></div>
                 <div class="clearfix goods-box" :key="goodsIndex" v-for="(goods,goodsIndex) in shop.items">
                     <img :src="goods.select ? activateIconPath:baseIconPath" class="fl goodsCheck" @click="goodsSelect(index,goodsIndex)"/>
                     <img :src="goods.img" class="goodsImg fl"/>
                     <div class="goods-detail fl">
                         <p class="goods-title">{{goods.cp}}</p>
                         <p class="parameter">{{goods.kg}}kg</p>
-                        <div class="clearfix">
+                        <div  class="clearfix">
                             <p class="price fl">{{goods.jg}}</p>
                             <div class="clearfix number-box fr">
                                 <span class="fl reduceIcon" @click="changeNumber(-1,index,goodsIndex)">-</span>
@@ -24,16 +29,47 @@
                             </div>
                         </div>
                     </div>
+
+                    <div v-if="goodsIndex+1 == shop.items.length" class="bottom-action clearfix">
+                        <button  style="margin-top: 29px;" class="fr buy-btn" >结算</button>
+                        <p style="margin-top: 16px;" class="fr count-number" v-if="isEdit == false">合计：<span>{{count.toFixed(2)}}</span></p>
+                        <button class="delete-btn fr" @click="deleteBtn()" v-if="isEdit == true">删除</button>
+                    </div>
+                    
                 </div>
+                
+                <van-row style="height: 30px; background-color: rgb(241, 246, 249);"></van-row> -->
+
+                <div class="clearfix shop-title"><p class="fl shopTitle">{{shop.sj}}</p><img src="../../assets/icon_arrow_right.png" class="fl arrowImg"/></div>
+                <div class="clearfix goods-box" :key="goodsIndex" v-for="(goods,goodsIndex) in shop.items">
+                    <img :src="goods.img" class="goodsImg fl"/>
+                    <div class="goods-detail fl">
+                        <p class="goods-title">{{goods.cp}}</p>
+                        <p class="parameter">{{goods.kg}}kg</p>
+                        <div  class="clearfix">
+                            <p class="price fl">{{goods.jg}}</p>
+                            <div class="clearfix number-box fr">
+                                <span class="fl reduceIcon" @click="changeNumber(-1,index,goodsIndex)">-</span>
+                                <input type="number" v-model="goods.sl" class="fl goods-number"/>
+                                <span class="fl plusIcon" @click="changeNumber(1,index,goodsIndex)">+</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="goodsIndex+1 == shop.items.length" class="bottom-action clearfix">
+                        <button @click="showOrderDetail(shop)"  style="margin-top: 29px;" class="fr buy-btn" >查看</button>
+                        <p style="margin-top: 16px;" class="fr count-number" v-if="isEdit == false">合计：<span>{{count.toFixed(2)}}</span></p>
+                        <button class="delete-btn fr" @click="deleteBtn()" v-if="isEdit == true">删除</button>
+                    </div>
+                    
+                </div>
+                
+                <van-row style="height: 30px; background-color: rgb(241, 246, 249);"></van-row>
             </li>
+            
         </ul>
         
-        <div class="bottom-action clearfix">
-            <img  :src="all_select ? activateIconPath:baseIconPath" class="all-select fl" @click="allSelect()"/>
-            <button class="fr buy-btn" v-if="isEdit == false">结算</button>
-            <p class="fr count-number" v-if="isEdit == false">合计：<span>{{count.toFixed(2)}}</span></p>
-            <button class="delete-btn fr" @click="deleteBtn()" v-if="isEdit == true">删除</button>
-        </div>
+        
 
        <van-tabbar v-model="active">
         <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
@@ -104,6 +140,13 @@ export default {
   watch: {},
   //方法集合
   methods: {
+      showOrderDetail(shop){
+          console.log(shop)
+          this.$router.push('/orderdetail');
+      },
+      onClickLeft() {
+      this.$router.go(-1);
+    },
     shopSelect:function (i) {
                     var _this = this;
                     _this.json[i].select = !_this.json[i].select;
@@ -336,7 +379,7 @@ input[type=number]::-webkit-outer-spin-button {
             line-height: 16px;
         }
         .outer-box{
-            padding: 100px 0 50px;
+            padding: 10px 0 50px;
         }
         .shop-box{
             margin: 20px 12px;
@@ -421,7 +464,6 @@ input[type=number]::-webkit-outer-spin-button {
         .bottom-action{
             width: 100%;
             height: 50px;
-            position: fixed;
             left: 0;
             bottom: 50px;
             background: #fff;

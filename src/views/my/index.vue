@@ -2,7 +2,7 @@
 <template>
 <div>
     <van-row>
-        <div class="header">
+        <div class="header" style="height: 171px;">
             <van-icon color="white" class="header-icon" name="contact" />
             <span>登录/注册</span>
         </div>
@@ -49,8 +49,8 @@
 
     <van-tabbar v-model="active">
         <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
-        <van-tabbar-item to="/login" icon="cart-o">购物车</van-tabbar-item>
-        <van-tabbar-item to="/login" icon="user-o">我的</van-tabbar-item>
+        <van-tabbar-item to="/goodscar" icon="cart-o">购物车</van-tabbar-item>
+        <van-tabbar-item to="/my" icon="user-o">我的</van-tabbar-item>
     </van-tabbar>
 
 </div>

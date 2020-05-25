@@ -1,7 +1,7 @@
 <!--  -->
 <template>
 <div>
-        <van-nav-bar title="电商联盟"  right-text="搜索分类" @click-right="onClickRight">
+        <van-nav-bar style="margin-top: 38px;" title="电商联盟"  right-text="搜索分类" @click-right="onClickRight">
            
         </van-nav-bar>
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
@@ -25,7 +25,7 @@
            <p style="text-align: center;font-size: 20px;">aaa</p>
            <van-grid :border="false" :column-num="2" >
                 <van-grid-item v-for="value in 6" :key="value">
-                    <van-image src="https://img.yzcdn.cn/vant/apple-1.jpg" />
+                    <van-image @click="gotoGI(value)" src="https://img.yzcdn.cn/vant/apple-1.jpg" />
                 </van-grid-item>
             </van-grid>
        </van-row>
@@ -42,14 +42,14 @@
            <p style="text-align: center;font-size: 20px;">aaa</p>
            <van-grid :border="false" :column-num="2" >
                 <van-grid-item v-for="value in 6" :key="value">
-                    <van-image src="https://img.yzcdn.cn/vant/apple-1.jpg" />
+                    <van-image @click="gotoGI(value)" src="https://img.yzcdn.cn/vant/apple-1.jpg" />
                 </van-grid-item>
             </van-grid>
        </van-row>
 
        <van-tabbar v-model="active">
         <van-tabbar-item to="/" icon="home-o">首页</van-tabbar-item>
-        <van-tabbar-item to="/login" icon="cart-o">购物车</van-tabbar-item>
+        <van-tabbar-item to="/goodscar" icon="cart-o">购物车</van-tabbar-item>
         <van-tabbar-item to="/my" icon="user-o">我的</van-tabbar-item>
        </van-tabbar>
 </div>
@@ -73,6 +73,10 @@ mounted() {
 methods:{
     onClickRight(){
         this.$router.push('/classify')
+    },
+    gotoGI(value){
+        console.log(value)
+        this.$router.push('/goodsinfo')
     }
 }
 }

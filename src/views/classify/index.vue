@@ -2,6 +2,7 @@
 <template>
 <div>
     <van-nav-bar
+    style="margin-top: 38px;"
         title="商品分类"
         left-text="返回"
         left-arrow

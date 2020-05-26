@@ -100,9 +100,9 @@ export default {
                         show:true,
                         items:[
                             {animateAn:'',animate:'',id:1,cp:'买不完，买不尽，买了还想买的纸巾，用了还能用的纸巾',jg:100,sl:2,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.35'},
+                                img:require('../../assets/FFF6.png'),kg:'0.35'},
                             {animateAn:'',animate:'',id:2,cp:'买不完，买不尽，买了还想买的湿纸巾，用了还能用的湿纸巾，想买多少就买多少，多多益善',jg:120,sl:5,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.88'}
+                                img:require('../../assets/FFF6.png'),kg:'0.88'}
                         ]
                     },
                     {
@@ -111,11 +111,11 @@ export default {
                         show:true,
                         items:[
                             {animate:'',id:1,cp:'玫瑰花，茉莉花，牵牛花，紫荆花，牡丹花，南瓜花，花钱的花',jg:20.3,sl:1,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.34'},
+                                img:require('../../assets/FFF6.png'),kg:'0.34'},
                             {animate:'',id:2,cp:'各种花，花不尽的花，花了还有的花，你要哪种花',jg:18.8,sl:2,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.88'},
+                                img:require('../../assets/FFF6.png'),kg:'0.88'},
                             {animate:'',id:3,cp:'花啦啦啦~我要面朝大海，春暖花开，花啦啦啦~',jg:88.8,sl:6,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.88'}
+                                img:require('../../assets/FFF6.png'),kg:'0.88'}
                         ]
                     },
                     {
@@ -124,11 +124,11 @@ export default {
                         show:true,
                         items:[
                             {animate:'',id:1,cp:'想吃啥？火锅，椰子鸡，串串锅，烧烤，海鲜，蒸鱼，牛排，大猪蹄子',jg:20,sl:1,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.88'},
+                                img:require('../../assets/FFF6.png'),kg:'0.88'},
                             {animate:'',id:2,cp:'还想吃啥？红酒，白酒，起泡酒，威士忌，黄酒，青梅酒，杨梅酒，药酒，米酒，鸡尾酒~~~',jg:88,sl:2,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.23'},
+                                img:require('../../assets/FFF6.png'),kg:'0.23'},
                             {animate:'',id:3,cp:'还能吃啥？沙拉，苹果，草莓，牛油果，樱桃，青枣，葡萄，提子，芒果，香蕉，龙眼，荔枝',jg:30,sl:3,select:false,
-                                img:'http://dummyimage.com/600x600/5a9e6e/FFF.png',kg:'0.68'}
+                                img:require('../../assets/FFF6.png'),kg:'0.68'}
                         ]
                     }
                 ]

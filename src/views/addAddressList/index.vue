@@ -27,10 +27,11 @@
 
 <script>
 import { Toast } from 'vant';
+import areaList from '../../utils/area'
 export default {
 data() {
 return {
-    areaList:{},
+    areaList,
     searchResult: [],
 }
 },

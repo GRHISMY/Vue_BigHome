@@ -13,7 +13,7 @@
 
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <van-image width="100%" height="100%" :src="image" />
+        <img width="100%" height="100%" src="../../assets/FFF.png" alt />
       </van-swipe-item>
     </van-swipe>
 
@@ -118,9 +118,7 @@
         </h1>
         <div class="J_ping desc right_shorter" id="itemDesc" ptag="7001.1.59" style>
           此商品将于2020-05-26,00点结束闪购特卖，国际音频品牌闪购
-          <a
-            href="//wqs.jd.com/portal/wx/seckill_m/branddetail.shtml?id=97492&amp;sceneval=2&amp;jxsid=15903703233848876710"
-          >查看&gt;</a>
+         
           <span class="desc_more" id="adverMore"></span>
         </div>
         <div class="book_desc" id="actTitleDesc" style="display:none" ptag="7001.1.50"></div>
@@ -142,12 +140,11 @@
     </div>
 
     <van-row style="height: 30px; background-color: rgb(241, 246, 249);"></van-row>
-
-    <van-image width="100%" height="100%" src="http://dummyimage.com/600x600/5a9e6e/FFF.png" />
+    <img width="100%" height="100%" src="../../assets/FFF6.png" alt />
 
     <van-row style="height: 30px; background-color: rgb(241, 246, 249);"></van-row>
 
-    <van-image width="100%" height="100%" src="http://dummyimage.com/600x600/5a9e6e/FFF.png" />
+    <img width="100%" height="100%" src="../../assets/FFF6.png" alt />
 
     <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" />
@@ -170,7 +167,7 @@ export default {
     //这里存放数据
     return {
       images: [
-        "http://dummyimage.com/400x400/ffcc33/FFF.png",
+        "../../assets/FFF.png",
         "http://dummyimage.com/400x400/ffcc33/FFF.png",
         "http://dummyimage.com/400x400/ffcc33/FFF.png"
       ]

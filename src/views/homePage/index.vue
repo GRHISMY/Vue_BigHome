@@ -22,16 +22,17 @@
         
 
        <van-row>
-           <p style="text-align: center;font-size: 20px;">aaa</p>
+           <p style="text-align: center;font-size: 20px;">阳光华丽旗舰店</p>
            <van-grid :border="false" :column-num="2" >
-                <van-grid-item v-for="value in 6" :key="value">
-                    <van-image @click="gotoGI(value)" src="https://img.yzcdn.cn/vant/apple-1.jpg" />
+                <van-grid-item v-for="(item,index) in goodsList " :key="index">
+                    <!-- <img @click="gotoGI(item.goods_id)" :src="require(item.goods_photo_path_infoList[0].path_name.toString())" /> -->
+                    <van-image @click="gotoGI(item.goods_id)" :src="require('../../assets/goods/'+imgList[index])" />
                 </van-grid-item>
             </van-grid>
        </van-row>
 
        <van-row >
-           <van-image style="height: 143px;" src="https://img.yzcdn.cn/vant/apple-1.jpg" />
+           <img style="height: 180px;width: 100%;" src="../../assets/goods/bar.png" />
        </van-row>
 
        <van-row style="height: 30px; background-color: rgb(241, 246, 249);">
@@ -56,15 +57,18 @@
 </template>
 
 <script>
+import goodsApi from '../../api/goods'
 export default {
 data() {
 return {
     active: 0,
+    goodsList:[],
+    imgList:[],
 }
 },
 //生命周期 - 创建完成（访问当前this实例）
 created() {
-
+    this.fetchData();
 },
 //生命周期 - 挂载完成（访问DOM元素）
 mounted() {
@@ -77,6 +81,25 @@ methods:{
     gotoGI(value){
         console.log(value)
         this.$router.push('/goodsinfo')
+    },
+    fetchData() {
+      const token = localStorage.getItem("TOKEN")
+    //   const userId = JSON.parse(localStorage.getItem("user")).bSId
+      // console.log(token)
+      // console.log(userId)
+      goodsApi.getList(token).then(response =>{
+        const resp = response.data;
+        this.goodsList = resp.data
+        
+        for(var index in this.goodsList){
+            
+            this.imgList.push(this.goodsList[index].goods_photo_path_infoList[0].path_name.toString())
+        }
+
+        console.log(this.imgList)
+      })
+
+      
     }
 }
 }

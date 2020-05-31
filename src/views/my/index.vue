@@ -4,7 +4,7 @@
     <van-row>
         <div class="header" style="height: 171px;">
             <van-icon color="white" class="header-icon" name="contact" />
-            <span @click="login">登录/注册</span>
+            <span @click="login">{{myUserName}}</span>
         </div>
     </van-row>
 
@@ -66,12 +66,14 @@ return {
         { name: '选项' },
         { name: '选项' },
         { name: '选项', subname: '描述信息' },
-      ],
+    ],
+    user:{},
+    myUserName:"登录/注册"
 }
 },
 //生命周期 - 创建完成（访问当前this实例）
 created() {
-
+    this.fetchData();
 },
 //生命周期 - 挂载完成（访问DOM元素）
 mounted() {
@@ -92,6 +94,15 @@ methods:{
     },
     address(){
         this.$router.push('/addresslist');
+    },
+    fetchData(){
+        this.user = JSON.parse(localStorage.getItem("user"))
+        if(JSON.stringify(this.user) === '{}'){
+            this.myUserName = "登录/注册"
+        }else{
+            this.myUserName = this.user.bSName
+        }
+        // console.log(this.user)
     }
 }
 }

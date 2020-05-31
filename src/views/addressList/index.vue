@@ -24,7 +24,7 @@
 
 <script>
 import { Toast } from 'vant';
-
+import addressApi from '../../api/address'
 export default {
 data() {
 return {
@@ -50,7 +50,9 @@ return {
 },
 //生命周期 - 创建完成（访问当前this实例）
 created() {
-
+  // console.log('aaa')
+  // alert('aaa')
+  this.fetchData();
 },
 //生命周期 - 挂载完成（访问DOM元素）
 mounted() {
@@ -66,8 +68,25 @@ methods:{
       this.$router.push('/addaddresslist');
     },
     onEdit(item, index) {
+      console.log(this.list[index])
+      const addressId = this.list[index].id
+      this.$router.push(`/editAddressList/${addressId}`);
       Toast('编辑地址:' + index);
     },
+
+    fetchData() {
+      const token = localStorage.getItem("TOKEN")
+      const userId = JSON.parse(localStorage.getItem("user")).bSId
+      // console.log(token)
+      // console.log(userId)
+      addressApi.getList(userId,token).then(response =>{
+        const resp = response.data;
+        this.list = resp.data
+        console.log(resp)
+      })
+
+      
+    }
 }
 }
 </script>

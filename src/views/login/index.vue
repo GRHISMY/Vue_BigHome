@@ -27,7 +27,7 @@
             :rules="[{ required: true, message: '请填写密码' }]"
         />
         <div style="margin: 16px;">
-            <van-button round block type="info" native-type="submit">
+            <van-button @click="login" round block type="info" native-type="submit">
             提交
             </van-button>
         </div>
@@ -42,6 +42,8 @@
 </template>
 
 <script>
+import loginApi from '../../api/login'
+import { Toast } from 'vant';
 export default {
 data() {
 return {
@@ -65,6 +67,21 @@ methods:{
     onSubmit(values) {
       console.log('submit', values);
     },
+    login(){
+        loginApi.login(this.username,this.password).then(response =>{
+            const resp = response.data
+            console.log(resp)
+            if(resp.code == -1){
+                Toast(resp.msg);
+            }else if(resp.code == 0){
+                const token = resp.data.token
+                localStorage.setItem("TOKEN",token)
+                localStorage.setItem("user",JSON.stringify(resp.data))
+                this.$router.push('/my');
+            }
+        })
+        console.log(this.username,this.password)
+    }
 }
 }
 </script>

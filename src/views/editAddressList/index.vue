@@ -2,7 +2,7 @@
 <template>
 <div>
     <van-nav-bar
-      title="新增收货地址"
+      title="编辑收货地址"
       left-text="返回"
       left-arrow
       @click-left="onClickLeft"
@@ -73,13 +73,30 @@ return {
 },
 //生命周期 - 创建完成（访问当前this实例）
 created() {
-
+  this.fetchData();
 },
 //生命周期 - 挂载完成（访问DOM元素）
 mounted() {
     
 },
 methods:{
+
+  fetchData(){
+    const addressId = this.$route.params.addressId
+    const token = localStorage.getItem("TOKEN")
+    addressApi.findOneAddress(addressId,token).then(response =>{
+      const resp = response.data
+      if(resp.code == 0){
+        this.AddressInfo = resp.data
+        const airesult = this.smartParse(this.AddressInfo.address.trim())
+        this.AddressInfo.areaCode = airesult.countyCode
+        this.AddressInfo.addressDetail = resp.msg
+      }else{
+        Toast("发生了某些错误")
+      }
+    })
+  },
+
   ai(){
     let str = this.message.trim();
     if(str.length ==0){
@@ -103,13 +120,14 @@ methods:{
       //  console.log(content)
        const token = localStorage.getItem("TOKEN")
       const userId = JSON.parse(localStorage.getItem("user")).bSId
-       addressApi.addAddress(content,token,userId).then(response =>{
+      const addressId = this.$route.params.addressId
+       addressApi.editAddress(content,token,userId,addressId).then(response =>{
          const resp = response.data
          
          if(resp.code == -1){
            Toast(resp.msg)
          }else{
-           Toast("新增成功")
+           Toast("修改成功")
            this.$router.push('/addresslist');
          }
         //  console.log(resp)
@@ -117,6 +135,17 @@ methods:{
       Toast('save');
     },
     onDelete() {
+      const addressId = this.$route.params.addressId
+      const token = localStorage.getItem("TOKEN")
+      addressApi.deleteAddress(addressId,token).then(response =>{
+        const resp = response.data
+        if(resp.code == 0){
+          Toast("删除成功")
+          this.$router.push('/addresslist');
+        }else{
+          Toast("删除失败")
+        }
+      })
       Toast('delete');
     },
     onChangeDetail(val) {

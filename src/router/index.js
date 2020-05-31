@@ -10,6 +10,7 @@ import OrderDetail from '../views/orderDetail'
 import AllOrder from '../views/allOrder'
 import AddressList from '../views/addressList'
 import AddAddressList from '../views/addAddressList'
+import EditAddressList from '../views/editAddressList'
 
 
 Vue.use(VueRouter)
@@ -65,6 +66,11 @@ export default new VueRouter({
             path:'/addaddresslist',
             name:'addaddresslist',
             component:AddAddressList
+        },
+        {
+            path:'/editAddressList/:addressId',
+            name:'editAddressList',
+            component:EditAddressList
         },
     ]
 })

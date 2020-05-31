@@ -6,12 +6,12 @@ const BASE_URI = '/dev-api'
 //     console.log(response.data)
 // })
 
-request({
-    method:'get',
-    url:'http://118.31.62.242:7300/mock/5dbe3057dff13b681188e8a5/test'
-}).then(response => {
-    console.log('get2',response.data)
-})
+// request({
+//     method:'get',
+//     url:'http://118.31.62.242:7300/mock/5dbe3057dff13b681188e8a5/test'
+// }).then(response => {
+//     console.log('get2',response.data)
+// })
 
 // request({
 //     method:'get',
@@ -19,12 +19,16 @@ request({
 // })
 
 export default{
-    getList(){
-        const req = request({
-            method:'get',
-            url:'http://118.31.62.242:7300/mock/5dbe3057dff13b681188e8a5/test'
+    getList(b_s_id,token) {
+        return request({
+            url: `/address/getAllAddress`,
+            method:'POST',
+            params:{
+                b_s_id:b_s_id,
+            },
+            headers:{
+                'Authorization':token
+            }
         })
-
-        return req
-    }
+    },
 }

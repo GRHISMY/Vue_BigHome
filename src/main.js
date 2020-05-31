@@ -4,6 +4,8 @@ import App from './App.vue'
 import router from './router'
 import Vant from 'vant';
 import 'vant/lib/index.css';
+import smartParse from 'vue-smart-parse';
+Vue.use(smartParse)
 Vue.use(Vant);
 
 

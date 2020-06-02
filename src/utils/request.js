@@ -4,6 +4,7 @@ import { Toast } from 'vant';
 
 const request = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
+    // baseURL: "http://3195xi0487.qicp.vip",
     timeout:5000,
 })
 

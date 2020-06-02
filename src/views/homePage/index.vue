@@ -1,14 +1,22 @@
 <!--  -->
 <template>
 <div>
-        <van-nav-bar style="margin-top: 38px;" title="电商联盟"  right-text="搜索分类" @click-right="onClickRight">
+        <van-nav-bar style="margin-top: 38px;" title="电商联盟" left-text="猜你喜欢"  right-text="搜索分类"  @click-left="onClickLeft" @click-right="onClickRight">
            
         </van-nav-bar>
         <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
-            <van-swipe-item>1</van-swipe-item>
-            <van-swipe-item>2</van-swipe-item>
-            <van-swipe-item>3</van-swipe-item>
-            <van-swipe-item>4</van-swipe-item>
+            <van-swipe-item>
+                <img width="100%"  src="../../assets/lunbo/lunbo1.png" alt="">
+            </van-swipe-item>
+            <van-swipe-item>
+                <img width="100%"  src="../../assets/lunbo/lunbo2.png" alt="">
+            </van-swipe-item>
+            <van-swipe-item>
+                <img width="100%"  src="../../assets/lunbo/lunbo3.png" alt="">
+            </van-swipe-item>
+            <van-swipe-item>
+                <img width="100%"  src="../../assets/lunbo/lunbo4.png" alt="">
+            </van-swipe-item>
         </van-swipe>
        <van-row class="van-hairline--bottom" style="height: 60px;">
         <van-col style="text-align: center;padding-top: 10px;" span="8"><van-icon color="red" style="padding: 6px;" name="passed" />自营品牌</van-col>
@@ -26,7 +34,7 @@
            <van-grid :border="false" :column-num="2" >
                 <van-grid-item v-for="(item,index) in goodsList " :key="index">
                     <!-- <img @click="gotoGI(item.goods_id)" :src="require(item.goods_photo_path_infoList[0].path_name.toString())" /> -->
-                    <van-image @click="gotoGI(item.goods_id)" :src="require('../../assets/goods/'+imgList[index])" />
+                    <van-image @click="gotoGI(item.goods_id)" :src="require('../../assets/goods/'+item.goods_photo_path_infoList[0].path_name)" />
                 </van-grid-item>
             </van-grid>
        </van-row>
@@ -75,12 +83,26 @@ mounted() {
     
 },
 methods:{
+    onClickLeft(){
+        goodsApi.aiGetGoods().then(response =>{
+        const resp = response.data;
+        this.goodsList = resp.data
+        console.log(this.goodsList)
+        
+        for(var index in this.goodsList){
+            
+            this.imgList.push(this.goodsList[index].goods_photo_path_infoList[0].path_name.toString())
+        }
+
+        // console.log(this.goodsList)
+      })
+    },
     onClickRight(){
         this.$router.push('/classify')
     },
     gotoGI(value){
-        console.log(value)
-        this.$router.push('/goodsinfo')
+        // console.log(value)
+        this.$router.push(`/goodsinfo/${value}`)
     },
     fetchData() {
       const token = localStorage.getItem("TOKEN")
@@ -96,7 +118,7 @@ methods:{
             this.imgList.push(this.goodsList[index].goods_photo_path_infoList[0].path_name.toString())
         }
 
-        console.log(this.imgList)
+        // console.log(this.goodsList)
       })
 
       
@@ -106,13 +128,13 @@ methods:{
 </script>
 <style scoped>
 /* @import url(); 引入css类 */
-  .my-swipe .van-swipe-item {
+  /* .my-swipe .van-swipe-item {
     color: #fff;
     font-size: 20px;
     line-height: 150px;
     text-align: center;
     background-color: #39a9ed;
-  }
+  } */
   
   
 </style>

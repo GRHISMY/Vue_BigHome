@@ -1,20 +1,19 @@
-<!--  -->
+<!-- -->
 <template>
   <div class="shop-page" id="shopPage">
         <div class="title-box">
             <header class="title">购物车</header>
             <span class="manage-btn" v-if="!isEdit" @click="isEdit = true">管理</span>
-            <span class="manage-btn" v-if="isEdit" @click="isEdit = false">完成</span>
+            <span class="manage-btn" v-if="isEdit" @click="editBuycar">完成</span>
         </div>
         <ul class="outer-box">
             <li class="shop-box" :key="index" v-for="(shop,index) in json">
                 <div class="clearfix shop-title"><img :src="shop.select ? activateIconPath: baseIconPath" class="fl checkImg" @click="shopSelect(index)"/><p class="fl shopTitle">{{shop.sj}}</p><img src="../../assets/icon_arrow_right.png" class="fl arrowImg"/></div>
                 <div class="clearfix goods-box" :key="goodsIndex" v-for="(goods,goodsIndex) in shop.items">
                     <img :src="goods.select ? activateIconPath:baseIconPath" class="fl goodsCheck" @click="goodsSelect(index,goodsIndex)"/>
-                    <img :src="goods.img" class="goodsImg fl"/>
+                    <img :src="require('../../assets/goods/'+goods.img)" class="goodsImg fl"/>
                     <div class="goods-detail fl">
                         <p class="goods-title">{{goods.cp}}</p>
-                        <p class="parameter">{{goods.kg}}kg</p>
                         <div class="clearfix">
                             <p class="price fl">{{goods.jg}}</p>
                             <div class="clearfix number-box fr">
@@ -30,7 +29,7 @@
         
         <div class="bottom-action clearfix">
             <img  :src="all_select ? activateIconPath:baseIconPath" class="all-select fl" @click="allSelect()"/>
-            <button class="fr buy-btn" v-if="isEdit == false">结算</button>
+            <button class="fr buy-btn" @click="buy" v-if="isEdit == false">结算</button>
             <p class="fr count-number" v-if="isEdit == false">合计：<span>{{count.toFixed(2)}}</span></p>
             <button class="delete-btn fr" @click="deleteBtn()" v-if="isEdit == true">删除</button>
         </div>
@@ -44,12 +43,17 @@
 </template>
 
 <script>
+import buycarApi from '../../api/buyCar';
+import orderApi from '../../api/order';
+import { Toast } from "vant";
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
+        actualData:[],
+        toJieKouData:[],
       active:1,
                 baseIconPath:require('../../assets/icon_radio.png'),
                 activateIconPath:require('../../assets/icon_radio_checked.png'),
@@ -63,8 +67,15 @@ export default {
                         select:false,
                         show:true,
                         items:[
-                            {animateAn:'',animate:'',id:1,cp:'买不完，买不尽，买了还想买的纸巾，用了还能用的纸巾',jg:100,sl:2,select:false,
-                                img:require('../../assets/FFF6.png'),kg:'0.35'},
+                            {animateAn:'',
+                            animate:'',
+                            id:1,
+                            cp:'买不完，买不尽，买了还想买的纸巾，用了还能用的纸巾',
+                            jg:100,
+                            sl:1,
+                            select:false,
+                            img:require('../../assets/FFF6.png')
+                        },
                             {animateAn:'',animate:'',id:2,cp:'买不完，买不尽，买了还想买的湿纸巾，用了还能用的湿纸巾，想买多少就买多少，多多益善',jg:120,sl:5,select:false,
                                 img:require('../../assets/FFF6.png'),kg:'0.88'}
                         ]
@@ -104,6 +115,102 @@ export default {
   watch: {},
   //方法集合
   methods: {
+      buy(){
+          
+          var _this = this;
+                    for(var s = 0; s < _this.json.length; s++){
+                        if(_this.json[s].select == true){
+                            
+                            this.actualData = (_this.json[s].items)
+                        }else {
+                            for(var o = 0; o < _this.json[s].items.length; o++){
+                                if(_this.json[s].items[o].select == true){
+                                    this.actualData.push(_this.json[s].items[o])
+                                }
+                            }
+                        }
+                    }
+            if(this.actualData.length == 0){
+                Toast("请选择商品")
+            }else{
+                
+                // console.log("AAAAAA",this.actualData)
+                    // console.log("toJieKouData ",this.toJieKouData)
+                
+                for(var i =0; i < _this.actualData.length; i++){
+                    // var orderItem = new FormData
+                    // orderItem.append("goods_id",this.actualData[i].id)
+                    // orderItem.append("goods_sum",this.actualData[i].sl)
+                    // orderItem.append("goods_money",this.actualData[i].jg)
+                    var orderItem = {
+                    goods_id:null,
+                    goods_sum:null,
+                    goods_money:null
+                }
+
+                    orderItem.goods_id = _this.actualData[i].id
+                    orderItem.goods_sum = _this.actualData[i].sl;
+                    orderItem.goods_money = _this.actualData[i].jg
+                    console.log("orderItem ",orderItem)
+
+                    // console.log("actualData  ",this.actualData)
+                    this.toJieKouData.push(orderItem)
+                }
+
+                this.$router.push(`/carChooseAddress/${this.count}/${JSON.stringify(this.toJieKouData)}/${"true"}`);
+                // localStorage.setItem("data",JSON.stringify(this.toJieKouData))
+                // console.log("AAAAAA",this.toJieKouData)
+                // const token = localStorage.getItem("TOKEN")
+                // const userId = JSON.parse(localStorage.getItem("user")).bSId
+                // var toJieKouData = JSON.stringify()
+                // orderApi.addOrder(this.count,1,userId,this.toJieKouData,token).then(response =>{
+                //     const resp = response.data
+                //     // console.log(resp)
+                // })
+
+
+            }
+            this.toJieKouData = []
+
+            this.actualData = []
+            
+      },
+      waitUpdatabuyCar(item,carIndex){
+            const token = localStorage.getItem("TOKEN")
+                //   console.log("AAAAAAA ",this.json[item].items[carIndex])
+                  buycarApi.editBuyCar(this.json[item].items[carIndex].id,1,this.json[item].items[carIndex].sl,this.json[item].items[carIndex].jg,token).then(response=>{
+                    const resp = response.data
+                    if(resp.code == 0){
+                    
+                    // this.$router.push(`/goodscar`)
+                    }
+                    return resp.code
+                })
+      },
+      async editBuycar(){
+          this.isEdit = false 
+          for(var item in this.json){
+              for(var carIndex in this.json[item].items){
+                await this.waitUpdatabuyCar(item,carIndex)
+              }
+            //   console.log(this.json)
+          }
+          Toast("编辑成功")
+          setTimeout(()=>{
+              this.fetchData();
+          },1000)
+          
+      },
+
+      fetchData(){
+      const token = localStorage.getItem("TOKEN")
+      buycarApi.getList(token).then(response =>{
+          const resp = response.data
+        //   console.log("AAA ",resp)
+          this.json = resp.data
+      })
+    },
+
     shopSelect:function (i) {
                     var _this = this;
                     _this.json[i].select = !_this.json[i].select;
@@ -182,14 +289,35 @@ export default {
                     _this.count = countNum;
                 },
                 deleteBtn:function () {
+                    // console.log("AAA ",this.json)
+                    // if(this.json[0].select){
+                    //     alert("删除店铺")
+                    // }else{
+                    //     const token = localStorage.getItem("TOKEN")
+                        
+                    //     alert("删除商品")
+                    // }
+
                     var _this = this;
                     for(var s = 0; s < _this.json.length; s++){
                         if(_this.json[s].select == true){
+                            const token = localStorage.getItem("TOKEN")
+                            buycarApi.deleteBuyCar(1,token)
                             _this.json.splice(s,1)
                         }else {
                             for(var o = 0; o < _this.json[s].items.length; o++){
                                 if(_this.json[s].items[o].select == true){
-                                    _this.json[s].items.splice(o,1)
+                                    console.log(_this.json[s].items[o].id)
+                                    const token = localStorage.getItem("TOKEN")
+                                    buycarApi.deleteBuyCarItem(_this.json[s].items[o].id,1,token).then(response =>{
+                                        const resp = response.data
+                                        if(resp.code==0){
+                                            Toast("删除成功")
+                                            // _this.json[s].items.splice(o,1)
+                                            this.fetchData()
+
+                                        }
+                                    })
                                 }
                             }
                         }
@@ -197,7 +325,9 @@ export default {
                 }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.fetchData();
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前

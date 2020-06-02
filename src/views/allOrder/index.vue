@@ -42,10 +42,9 @@
 
                 <div class="clearfix shop-title"><p class="fl shopTitle">{{shop.sj}}</p><img src="../../assets/icon_arrow_right.png" class="fl arrowImg"/></div>
                 <div class="clearfix goods-box" :key="goodsIndex" v-for="(goods,goodsIndex) in shop.items">
-                    <img :src="goods.img" class="goodsImg fl"/>
+                    <img :src="require('../../assets/goods/'+goods.img)" class="goodsImg fl"/>
                     <div class="goods-detail fl">
                         <p class="goods-title">{{goods.cp}}</p>
-                        <p class="parameter">{{goods.kg}}kg</p>
                         <div  class="clearfix">
                             <p class="price fl">{{goods.jg}}</p>
                             <div class="clearfix number-box fr">
@@ -57,8 +56,8 @@
                     </div>
 
                     <div v-if="goodsIndex+1 == shop.items.length" class="bottom-action clearfix">
-                        <button @click="showOrderDetail(shop)"  style="margin-top: 29px;" class="fr buy-btn" >查看</button>
-                        <p style="margin-top: 16px;" class="fr count-number" v-if="isEdit == false">合计：<span>{{count.toFixed(2)}}</span></p>
+                        <button @click="showOrderDetail(index)"  style="margin-top: 29px;" class="fr buy-btn" >查看</button>
+                        <p style="margin-top: 16px;" class="fr count-number" v-if="isEdit == false">合计：<span>{{shop.order_money}}</span></p>
                         <button class="delete-btn fr" @click="deleteBtn()" v-if="isEdit == true">删除</button>
                     </div>
                     
@@ -80,6 +79,7 @@
 </template>
 
 <script>
+import orderApi from '../../api/order'
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
@@ -99,8 +99,14 @@ export default {
                         select:false,
                         show:true,
                         items:[
-                            {animateAn:'',animate:'',id:1,cp:'买不完，买不尽，买了还想买的纸巾，用了还能用的纸巾',jg:100,sl:2,select:false,
-                                img:require('../../assets/FFF6.png'),kg:'0.35'},
+                            {animateAn:'',
+                            animate:'',
+                            id:1,
+                            cp:'买不完，买不尽，买了还想买的纸巾，用了还能用的纸巾',
+                            jg:100,sl:2,select:false,
+                            img:require('../../assets/FFF6.png'),
+                            kg:'0.35'
+                            },
                             {animateAn:'',animate:'',id:2,cp:'买不完，买不尽，买了还想买的湿纸巾，用了还能用的湿纸巾，想买多少就买多少，多多益善',jg:120,sl:5,select:false,
                                 img:require('../../assets/FFF6.png'),kg:'0.88'}
                         ]
@@ -140,9 +146,19 @@ export default {
   watch: {},
   //方法集合
   methods: {
-      showOrderDetail(shop){
-          console.log(shop)
-          this.$router.push('/orderdetail');
+      fetchData(){
+          const userId = JSON.parse(localStorage.getItem("user")).bSId
+          const token = localStorage.getItem("TOKEN")
+          orderApi.getAllOrder(userId,token).then(response =>{
+              const resp = response.data
+              if(resp.code == 0){
+                  this.json = resp.data
+              }
+          })
+      },
+      showOrderDetail(index){
+          console.log(this.json[index].orderId)
+          this.$router.push(`/orderdetail/${this.json[index].orderId}/${this.json[index].order_money}`);
       },
       onClickLeft() {
       this.$router.go(-1);
@@ -240,7 +256,9 @@ export default {
                 }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+      this.fetchData();
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前

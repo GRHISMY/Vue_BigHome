@@ -11,6 +11,7 @@ import AllOrder from '../views/allOrder'
 import AddressList from '../views/addressList'
 import AddAddressList from '../views/addAddressList'
 import EditAddressList from '../views/editAddressList'
+import CarChooseAddress from '../views/carChooseAddress'
 
 
 Vue.use(VueRouter)
@@ -38,7 +39,7 @@ export default new VueRouter({
             component:My
         },
         {
-            path:'/goodsinfo',
+            path:'/goodsinfo/:goodsId',
             name:'goodsinfo',
             component:GoodsInfo
         },
@@ -48,7 +49,7 @@ export default new VueRouter({
             component:GoodsCar
         },
         {
-            path:'/orderdetail',
+            path:'/orderdetail/:orderId/:order_money',
             name:'orderdetail',
             component:OrderDetail
         },
@@ -71,6 +72,11 @@ export default new VueRouter({
             path:'/editAddressList/:addressId',
             name:'editAddressList',
             component:EditAddressList
+        },
+        {
+            path:'/carChooseAddress/:count/:data/:isCar',
+            name:'carChooseAddress',
+            component:CarChooseAddress
         },
     ]
 })

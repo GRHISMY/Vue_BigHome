@@ -29,22 +29,21 @@ export default{
             }
         })
     },
-    addAddress(form,token,userId){
+    aiGetGoods() {
         return request({
-            url: `/address/addAddress`,
-            method:'POST',
+            url: `/recomm`,
+            method:'GET',
+        })
+    },
+    getGoodsById(goodsId,token) {
+        return request({
+            url: `/goods/getAGoods_Info`,
+            method:'GET',
             params:{
-                b_s_id:userId,
-                address: form.province+form.city+form.county,
-                address_detail: form.addressDetail,
-                addresssee: form.name,
-                telephone: form.tel,
-                default_status: form.isDefault?0:1,
-                postcode: form.postalCode,
+                goods_id:goodsId
             },
             headers:{
-                'Authorization':token,
-                'Content-Type':'application/x-www-form-urlencoded;charset=UTF-8'
+                'Authorization':token
             }
         })
     },

@@ -13,20 +13,20 @@
 
     <van-swipe class="my-swipe" :autoplay="3000" indicator-color="white">
       <van-swipe-item v-for="(image, index) in images" :key="index">
-        <img width="100%" height="100%" src="../../assets/FFF.png" alt />
+        <img width="100%" height="100%" :src="require('../../assets/goods/'+image.path_name)" alt />
       </van-swipe-item>
     </van-swipe>
 
     <div class="detail_decoration bg_red" id="priceSpec" style>
       <div class="price" id="specPrice">
         ¥
-        <em>699</em>
+        <em>{{goodsInfo.goods_actual_price}}</em>
         <span class="price_decimals">.00</span>
       </div>
       <div class="msg">
         <div class="text" id="ysPrice">
           <span id="ysTips"></span>
-          <del class="old_price" id="specOldPrice" style>¥749.00</del>
+          <del class="old_price" id="specOldPrice" style>¥{{goodsInfo.goods_price}}</del>
         </div>
         <div class="text" id="specPriceIcon">
           <span class="logo type_seckill">品牌闪购</span>
@@ -113,7 +113,7 @@
       <div class="fn_wrap">
         <h1 class="fn fn_goods_name fgn_old" id="favWrap">
           <div class="fn_text_wrap" id="itemName" ptag="7001.1.163">
-            <i class="mod_tag mod_tag_big"></i>Beats X 丝缎银
+            <i class="mod_tag mod_tag_big"></i>{{goodsInfo.goods_name}}
           </div>
         </h1>
         <div class="J_ping desc right_shorter" id="itemDesc" ptag="7001.1.59" style>
@@ -149,8 +149,8 @@
     <van-goods-action>
       <van-goods-action-icon icon="chat-o" text="客服" @click="onClickIcon" />
       <van-goods-action-icon icon="cart-o" text="购物车" @click="onClickIcon" />
-      <van-goods-action-button type="warning" text="加入购物车" @click="onClickButton" />
-      <van-goods-action-button type="danger" text="立即购买" @click="onClickButton" />
+      <van-goods-action-button type="warning" text="加入购物车" @click="addBuyCar" />
+      <van-goods-action-button type="danger" text="立即购买" @click="buy" />
     </van-goods-action>
 
     <div class="footer">人家是有底线的 -.-</div>
@@ -159,13 +159,16 @@
 
 <script>
 import { Toast } from "vant";
-
+import goodsApi from '../../api/goods'
+import buycarApi from '../../api/buyCar'
 export default {
   //import引入的组件需要注入到对象中才能使用
   components: {},
   data() {
     //这里存放数据
     return {
+      toJieKouData:[],
+      goodsInfo:{},
       images: [
         "../../assets/FFF.png",
         "http://dummyimage.com/400x400/ffcc33/FFF.png",
@@ -179,6 +182,44 @@ export default {
   watch: {},
   //方法集合
   methods: {
+    buy(){
+      console.log(this.goodsInfo)
+      var orderItem = {
+          goods_id:null,
+          goods_sum:null,
+          goods_money:null
+      }
+      orderItem.goods_id = this.goodsInfo.goods_id
+      orderItem.goods_sum = 1
+      orderItem.goods_money = this.goodsInfo.goods_price
+      this.toJieKouData.push(orderItem)
+      this.$router.push(`/carChooseAddress/${orderItem.goods_money}/${JSON.stringify(this.toJieKouData)}/${"false"}`);
+      // var orderItem = {
+      //               goods_id:null,
+      //               goods_sum:null,
+      //               goods_money:null
+      //           }
+
+      //               orderItem.goods_id = _this.actualData[i].id
+      //               orderItem.goods_sum = _this.actualData[i].sl;
+      //               orderItem.goods_money = _this.actualData[i].jg
+      //               console.log("orderItem ",orderItem)
+
+      //               // console.log("actualData  ",this.actualData)
+      //               this.toJieKouData.push(orderItem)
+
+    },
+    addBuyCar(){
+      const token = localStorage.getItem("TOKEN")
+      buycarApi.addBuyCar(this.goodsInfo.goods_id,1,1,this.goodsInfo.goods_actual_price,token).then(response=>{
+        const resp = response.data
+        if(resp.code == 0){
+          Toast("新增成功")
+          this.$router.push(`/goodscar`)
+        }
+      })
+      console.log("AAAA ",this.goodsInfo )
+    },
     onClickLeft() {
       this.$router.go(-1);
     },
@@ -187,10 +228,22 @@ export default {
     },
     onClickButton() {
       Toast("点击按钮");
+    },
+    fetchData(){
+      const goodsId = this.$route.params.goodsId
+      const token = localStorage.getItem("TOKEN")
+      goodsApi.getGoodsById(goodsId,token).then(response => {
+        const resp = response.data
+        this.goodsInfo = resp.data
+        this.images = this.goodsInfo.goods_photo_path_infoList
+        console.log(this.images)
+      })
     }
   },
   //生命周期 - 创建完成（可以访问当前this实例）
-  created() {},
+  created() {
+    this.fetchData();
+  },
   //生命周期 - 挂载完成（可以访问DOM元素）
   mounted() {},
   beforeCreate() {}, //生命周期 - 创建之前
